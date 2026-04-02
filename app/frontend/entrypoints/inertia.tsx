@@ -1,7 +1,9 @@
 import { createInertiaApp } from '@inertiajs/react'
+import Layout from '@/layouts/layout'
 
 void createInertiaApp({
   pages: "../pages",
+  layout: () => Layout,
 
   strictMode: true,
 

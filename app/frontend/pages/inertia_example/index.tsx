@@ -5,55 +5,41 @@ import railsSvg from '/assets/rails.svg'
 import inertiaSvg from '/assets/inertia.svg'
 import reactSvg from '/assets/react.svg'
 
-import cs from './index.module.css'
-
 export default function InertiaExample(
   { rails_version, ruby_version, rack_version, inertia_rails_version }:
   { rails_version: string, ruby_version: string, rack_version: string, inertia_rails_version: string }
 ) {
   return (
-    <div className={cs.root}>
+    <div className="full-page flex flex-col items-center justify-center text-center">
       <Head title="Ruby on Rails + Inertia + React" />
 
-      <nav className={cs.subNav}>
+      <nav className="flex items-center gap-4">
         <a href="https://rubyonrails.org" target="_blank">
-          <img  className={`${cs.logo} ${cs.rails}`} alt="Ruby on Rails Logo" src={railsSvg} />
+          <img className="h-32 p-4" alt="Ruby on Rails Logo" src={railsSvg} />
         </a>
         <a href="https://inertia-rails.dev" target="_blank">
-          <img className={`${cs.logo} ${cs.inertia}`} src={inertiaSvg} alt="Inertia logo" />
+          <img className="h-32 p-4" src={inertiaSvg} alt="Inertia logo" />
         </a>
         <a href="https://react.dev" target="_blank">
-          <img
-            className={`${cs.logo} ${cs.react}`}
-            src={reactSvg}
-            alt="React logo"
-          />
+          <img className="h-32 p-4" src={reactSvg} alt="React logo" />
         </a>
       </nav>
 
-      <div className={cs.footer}>
-        <div className={cs.card}>
-          <p>
-            Edit <code>app/frontend/pages/inertia_example/index.tsx</code> and save to test <abbr title="Hot Module Replacement">HMR</abbr>.
-          </p>
-        </div>
+      <p className="mt-8 text-sm text-muted-foreground">
+        Edit <code>app/frontend/pages/inertia_example/index.tsx</code> and save to test HMR.
+      </p>
 
-        <ul>
-          <li>
-            <ul>
-              <li><strong>Rails version:</strong> {rails_version}</li>
-              <li><strong>Rack version:</strong> {rack_version}</li>
-            </ul>
-          </li>
-          <li><strong>Ruby version:</strong> {ruby_version}</li>
-          <li>
-            <ul>
-              <li><strong>Inertia Rails version:</strong> {inertia_rails_version}</li>
-              <li><strong>React version:</strong> {react_version}</li>
-            </ul>
-          </li>
-          </ul>
-      </div>
+      <ul className="mt-8 flex gap-2 text-sm text-muted-foreground list-none">
+        <li>Rails {rails_version}</li>
+        <li>·</li>
+        <li>Ruby {ruby_version}</li>
+        <li>·</li>
+        <li>Rack {rack_version}</li>
+        <li>·</li>
+        <li>Inertia Rails {inertia_rails_version}</li>
+        <li>·</li>
+        <li>React {react_version}</li>
+      </ul>
     </div>
   )
 }
