@@ -13,3 +13,9 @@ export interface UserRow {
   email: string
   role: 'member' | 'admin'
 }
+
+export interface InvitationRow {
+  id: number
+  email: string
+  created_at: string
+}

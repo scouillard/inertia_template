@@ -8,6 +8,8 @@ class User < ApplicationRecord
 
   validates :name, presence: true
 
+  has_many :sent_invitations, class_name: "Invitation", foreign_key: :invited_by_id, dependent: :destroy
+
   def initials
     parts = name.split
     if parts.size >= 2

@@ -1,0 +1,32 @@
+class Invitation < ApplicationRecord
+  has_secure_token :token
+
+  belongs_to :invited_by, class_name: "User"
+
+  EXPIRY_DURATION = 7.days
+
+  scope :pending, -> { where(accepted_at: nil).where(expires_at: Time.current..) }
+
+  validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :email, uniqueness: { conditions: -> { pending }, message: "already has a pending invitation" }
+
+  before_create :set_expiry
+
+  def pending?
+    accepted_at.nil? && expires_at > Time.current
+  end
+
+  def accept!(user_attrs)
+    transaction do
+      user = User.create!(user_attrs.merge(email: email))
+      update!(accepted_at: Time.current)
+      user
+    end
+  end
+
+  private
+
+  def set_expiry
+    self.expires_at = EXPIRY_DURATION.from_now
+  end
+end

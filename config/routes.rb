@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   get "settings", to: "settings#show"
 
+  resources :invitations, only: %i[create show update], param: :token
+
   namespace :account do
     resource :password, only: :update
   end
