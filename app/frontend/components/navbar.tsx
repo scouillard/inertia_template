@@ -1,6 +1,7 @@
 import { router, usePage } from '@inertiajs/react'
-import { UserCircleIcon, Settings01Icon } from '@hugeicons/core-free-icons'
+import { Settings01Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
+import { UserIcon } from '@/components/user-icon'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,8 +25,8 @@ export default function Navbar() {
       {current_user && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white outline-none">
-              <HugeiconsIcon icon={UserCircleIcon} size={16} />
+            <button className="rounded-full outline-none">
+              <UserIcon name={current_user.name} size={32} />
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

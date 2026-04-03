@@ -4,5 +4,5 @@ export type FlashData = {
 }
 
 export type SharedProps = {
-  current_user: { id: number; email: string } | null
+  current_user: { id: number; email: string; name: string } | null
 }

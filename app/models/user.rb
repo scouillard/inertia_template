@@ -3,4 +3,15 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+
+  validates :name, presence: true
+
+  def initials
+    parts = name.split
+    if parts.size >= 2
+      "#{parts.first[0]}#{parts.last[0]}".upcase
+    else
+      parts.first[0, 2].upcase
+    end
+  end
 end
