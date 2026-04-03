@@ -8,6 +8,10 @@ Rails.application.routes.draw do
 
   get "settings", to: "settings#show"
 
+  namespace :account do
+    resource :password, only: :update
+  end
+
   root "inertia_example#index"
   get "inertia-example", to: "inertia_example#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
