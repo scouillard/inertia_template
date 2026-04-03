@@ -1,19 +1,22 @@
 import { useState } from 'react'
-import { Head, useForm } from '@inertiajs/react'
+import { Head, useForm, usePage } from '@inertiajs/react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { SpinningWheel } from '@/components/spinning-wheel'
 import { getTheme, setTheme, type Theme } from '@/lib/theme'
+import { TeamTab } from './components/team-tab'
+import type { UserRow } from '@/types'
 
-type Tab = 'general' | 'account'
+type Tab = 'general' | 'account' | 'team'
 
 const tabs: { id: Tab; label: string }[] = [
   { id: 'general', label: 'General' },
   { id: 'account', label: 'Account' },
-  // { id: 'team', label: 'Team' },
+  { id: 'team', label: 'Team' },
 ]
 
 export default function Show() {
+  const { users } = usePage<{ users: UserRow[] }>().props
   const [activeTab, setActiveTab] = useState<Tab>('general')
   const [theme, setThemeState] = useState<Theme>(() => getTheme())
   const [editingPassword, setEditingPassword] = useState(false)
@@ -191,12 +194,7 @@ export default function Show() {
               </Card>
             )}
 
-            {/* {activeTab === 'team' && (
-              <Card className="gap-0 p-0">
-                <div className="divide-y divide-border">
-                </div>
-              </Card>
-            )} */}
+            {activeTab === 'team' && <TeamTab users={users} />}
           </div>
         </div>
       </div>

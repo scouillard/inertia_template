@@ -13,3 +13,15 @@ User.find_or_create_by!(email: 'samuel@myapp.com') do |user|
   user.password = 'password1234!'
   user.password_confirmation = 'password1234!'
 end
+
+User.find_or_create_by!(email: 'obie@myapp.com') do |user|
+  user.name = 'Obie Trice'
+  user.password = 'password1234!'
+  user.password_confirmation = 'password1234!'
+end
+
+User.find_or_create_by!(email: 'kurt@myapp.com') do |user|
+  user.name = 'Kurt Cobain'
+  user.password = 'password1234!'
+  user.password_confirmation = 'password1234!'
+end

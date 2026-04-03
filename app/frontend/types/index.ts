@@ -6,3 +6,10 @@ export type FlashData = {
 export type SharedProps = {
   current_user: { id: number; email: string; name: string } | null
 }
+
+export interface UserRow {
+  id: number
+  name: string
+  email: string
+  role: 'member' | 'admin'
+}

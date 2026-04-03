@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  enum :role, { member: "member", admin: "admin" }, prefix: true, validate: true
+
   validates :name, presence: true
 
   def initials
