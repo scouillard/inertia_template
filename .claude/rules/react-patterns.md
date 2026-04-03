@@ -257,6 +257,78 @@ const filtered = useMemo(() => items.filter((i) => i.active), [items]);
 
 ---
 
+## Mobile-First Layout (REQUIRED)
+
+Every page and component must work on mobile. This is non-negotiable.
+
+**Core rules:**
+- Write mobile styles first, add `sm:`/`md:` overrides for larger screens
+- Never use fixed widths without a mobile fallback
+- Always add `min-w-0` to flex children that contain text (prevents overflow)
+- Reduce padding on mobile: `px-4 sm:px-8`, `py-8 sm:py-12`
+
+**Stacking layouts:**
+
+```tsx
+// ✅ Sidebar layout: stacks on mobile, side-by-side on desktop
+<div className="flex flex-col gap-6 sm:flex-row sm:gap-10">
+  <nav className="shrink-0 sm:w-44">...</nav>
+  <div className="flex-1 min-w-0">...</div>
+</div>
+```
+
+**Horizontal nav (tabs/pills) on mobile:**
+
+```tsx
+// ✅ Scrollable horizontal tabs on mobile, vertical list on desktop
+<ul className="flex gap-1 overflow-x-auto pb-1 sm:flex-col sm:space-y-0.5 sm:overflow-visible sm:pb-0">
+  <li>
+    <button className="whitespace-nowrap rounded-md px-3 py-2 text-sm sm:w-full sm:text-left">
+      Tab
+    </button>
+  </li>
+</ul>
+```
+
+**Settings rows:**
+
+```tsx
+// ✅ Label above control on mobile, inline on desktop
+<div className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+  <div>
+    <p className="text-sm font-medium">Setting Name</p>
+    <p className="text-sm text-muted-foreground">Description of this setting.</p>
+  </div>
+  <div className="shrink-0">
+    {/* control: button, toggle, select, etc. */}
+  </div>
+</div>
+```
+
+**Grid layouts:**
+
+```tsx
+// ✅ 1 col on mobile → 2 col on tablet → 3 col on desktop
+<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+```
+
+**What to avoid:**
+
+```tsx
+// ❌ Fixed sidebar with no mobile fallback
+<div className="flex gap-10">
+  <nav className="w-44">...</nav>
+
+// ❌ Hardcoded horizontal layout
+<div className="flex items-center justify-between">
+  // breaks on small screens if content is wide
+
+// ❌ Large padding with no mobile reduction
+<div className="px-8 py-12">
+```
+
+---
+
 ## Styling & Text Colors
 
 **Prefer semantic colors:**

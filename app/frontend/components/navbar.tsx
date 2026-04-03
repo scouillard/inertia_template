@@ -19,12 +19,12 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-14 px-6 border-b border-white/10 bg-black">
-      <span className="text-foreground font-semibold tracking-tight">MyApp</span>
+      <span className="text-white font-semibold tracking-tight">MyApp</span>
 
       {current_user && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-colors">
+            <button className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white outline-none">
               <HugeiconsIcon icon={UserCircleIcon} size={16} />
             </button>
           </DropdownMenuTrigger>
