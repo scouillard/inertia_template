@@ -51,11 +51,11 @@ class InvitationsController < InertiaController
   def set_invitation
     @invitation = Invitation.find_by!(token: params[:token])
   rescue ActiveRecord::RecordNotFound
-    redirect_to root_path, alert: "Invitation not found."
+    redirect_to new_user_session_path, alert: "Invitation not found."
   end
 
   def ensure_pending!
-    redirect_to root_path, alert: "This invitation has expired or has already been used." unless @invitation.pending?
+    redirect_to new_user_session_path, alert: "This invitation has expired or has already been used." unless @invitation.pending?
   end
 
   def require_admin!

@@ -8,9 +8,9 @@ export default function Layout({ children }: PropsWithChildren) {
   const { flash } = usePage()
 
   useEffect(() => {
-      if (flash.notice) toast.success(flash.notice);
-      if (flash.alert) toast.error(flash.alert);
-  }, [flash]);
+      if (flash.notice) toast.success(flash.notice, { id: flash.notice });
+      if (flash.alert) toast.error(flash.alert, { id: flash.alert });
+  }, [flash.notice, flash.alert]);
 
   return (
     <>
