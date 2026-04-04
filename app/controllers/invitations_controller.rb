@@ -34,7 +34,17 @@ class InvitationsController < InertiaController
 
   def google
     session[:pending_invitation_token] = @invitation.token
-    redirect_to user_google_oauth2_omniauth_authorize_path, allow_other_host: true
+    render html: <<~HTML.html_safe
+      <!DOCTYPE html>
+      <html>
+      <body>
+        <form id="f" method="post" action="#{user_google_oauth2_omniauth_authorize_path}">
+          <input type="hidden" name="authenticity_token" value="#{form_authenticity_token}">
+        </form>
+        <script>document.getElementById('f').submit()</script>
+      </body>
+      </html>
+    HTML
   end
 
   def update

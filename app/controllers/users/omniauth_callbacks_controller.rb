@@ -6,7 +6,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     user = User.from_omniauth(auth)
     if user
-      sign_in_and_redirect user, event: :authentication
+      sign_in user, event: :authentication
+      redirect_to root_path, notice: "Signed in successfully."
       return
     end
 
@@ -17,7 +18,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     if invitation&.email == auth.info.email
       user = invitation.accept_with_google!(auth)
-      sign_in_and_redirect user, event: :authentication
+      sign_in user, event: :authentication
+      redirect_to root_path, notice: "Welcome to MyApp!"
     else
       redirect_to new_user_session_path,
         alert: "You need a valid invitation to join. Ask an admin to invite #{auth.info.email}."

@@ -12,6 +12,7 @@ User.find_or_create_by!(email: 'samuel@myapp.com') do |user|
   user.name = 'Samuel Couillard'
   user.password = 'password1234!'
   user.password_confirmation = 'password1234!'
+  user.role = "admin"
 end
 
 User.find_or_create_by!(email: 'obie@myapp.com') do |user|

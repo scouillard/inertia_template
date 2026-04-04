@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { SpinningWheel } from '@/components/spinning-wheel'
 import { getTheme, setTheme, type Theme } from '@/lib/theme'
 import { TeamTab } from './components/team-tab'
-import type { UserRow, InvitationRow } from '@/types'
+import type { SharedProps, UserRow, InvitationRow } from '@/types'
 
 type Tab = 'general' | 'account' | 'team'
 
@@ -16,7 +16,7 @@ const tabs: { id: Tab; label: string }[] = [
 ]
 
 export default function Show() {
-  const { users, pending_invitations } = usePage<{ users: UserRow[]; pending_invitations: InvitationRow[] }>().props
+  const { users, pending_invitations, current_user } = usePage<SharedProps & { users: UserRow[]; pending_invitations: InvitationRow[] }>().props
   const [activeTab, setActiveTab] = useState<Tab>('general')
   const [theme, setThemeState] = useState<Theme>(() => getTheme())
   const [editingPassword, setEditingPassword] = useState(false)
@@ -151,7 +151,7 @@ export default function Show() {
                         <p className="text-sm font-medium">Change Password</p>
                         <p className="text-sm text-muted-foreground">Update the password associated with your account.</p>
                       </div>
-                      <Button variant="outline" className="shrink-0" onClick={() => setEditingPassword(true)}>
+                      <Button variant="outline" className="shrink-0" onClick={() => setEditingPassword(true)} disabled={!!current_user?.provider}>
                         Edit
                       </Button>
                     </div>
