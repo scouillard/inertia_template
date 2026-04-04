@@ -1,4 +1,4 @@
-import { router, usePage } from '@inertiajs/react'
+import { Link, router, usePage } from '@inertiajs/react'
 import { Settings01Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { UserIcon } from '@/components/user-icon'
@@ -18,9 +18,11 @@ export default function Navbar() {
     router.delete('/users/sign_out')
   }
 
+  const homeHref = current_user ? '/' : '/users/sign_in'
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-14 px-6 border-b border-white/10 bg-black">
-      <button onClick={() => router.visit('/')} className="text-white font-semibold tracking-tight">MyApp</button>
+      <Link href={homeHref} className="text-white font-semibold tracking-tight">MyApp</Link>
 
       {current_user && (
         <DropdownMenu>
