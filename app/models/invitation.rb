@@ -24,6 +24,20 @@ class Invitation < ApplicationRecord
     end
   end
 
+  def accept_with_google!(auth)
+    transaction do
+      user = User.create!(
+        email: email,
+        name: auth.info.name.presence || email.split("@").first,
+        provider: auth.provider,
+        uid: auth.uid,
+        password: Devise.friendly_token[0, 20]
+      )
+      update!(accepted_at: Time.current)
+      user
+    end
+  end
+
   private
 
   def set_expiry

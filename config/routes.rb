@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { sessions: "sessions", passwords: "passwords" }, skip: %i[registrations confirmations unlocks]
+  devise_for :users,
+    controllers: { sessions: "sessions", passwords: "passwords", omniauth_callbacks: "users/omniauth_callbacks" },
+    skip: %i[registrations confirmations unlocks]
 
   # Redirect to localhost from 127.0.0.1 to use same IP address with Vite server
   constraints(host: "127.0.0.1") do
@@ -8,7 +10,11 @@ Rails.application.routes.draw do
 
   get "settings", to: "settings#show"
 
-  resources :invitations, only: %i[create show update], param: :token
+  resources :invitations, only: %i[create show update], param: :token do
+    member do
+      post :google
+    end
+  end
 
   namespace :account do
     resource :password, only: :update

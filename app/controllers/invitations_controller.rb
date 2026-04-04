@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class InvitationsController < InertiaController
-  skip_before_action :authenticate_user!, only: %i[show update]
+  skip_before_action :authenticate_user!, only: %i[show update google]
   before_action :require_admin!, only: :create
-  before_action :set_invitation, only: %i[show update]
-  before_action :ensure_pending!, only: %i[show update]
+  before_action :set_invitation, only: %i[show update google]
+  before_action :ensure_pending!, only: %i[show update google]
 
   def create
     invitation = current_user.sent_invitations.build(email: params[:email])
@@ -30,6 +30,11 @@ class InvitationsController < InertiaController
       email: @invitation.email,
       token: @invitation.token
     }
+  end
+
+  def google
+    session[:pending_invitation_token] = @invitation.token
+    redirect_to user_google_oauth2_omniauth_authorize_path, allow_other_host: true
   end
 
   def update
