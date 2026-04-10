@@ -21,6 +21,7 @@ export default function Layout({ children }: PropsWithChildren) {
       <Toaster
         position="bottom-right"
         reverseOrder={false}
+        toastOptions={{ duration: 6000 }}
       />
     </>
   )

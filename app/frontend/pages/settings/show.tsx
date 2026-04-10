@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import { Head, useForm, usePage } from '@inertiajs/react'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { ArrowLeft01Icon } from '@hugeicons/core-free-icons'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { SpinningWheel } from '@/components/spinning-wheel'
 import { getTheme, setTheme, type Theme } from '@/lib/theme'
 import { TeamTab } from './components/team-tab'
@@ -9,15 +12,17 @@ import type { SharedProps, UserRow, InvitationRow } from '@/types'
 
 type Tab = 'general' | 'account' | 'team'
 
-const tabs: { id: Tab; label: string }[] = [
+const allTabs: { id: Tab; label: string; adminOnly?: boolean }[] = [
   { id: 'general', label: 'General' },
   { id: 'account', label: 'Account' },
-  { id: 'team', label: 'Team' },
+  { id: 'team', label: 'Team', adminOnly: true },
 ]
 
 export default function Show() {
   const { users, pending_invitations, current_user } = usePage<SharedProps & { users: UserRow[]; pending_invitations: InvitationRow[] }>().props
   const [activeTab, setActiveTab] = useState<Tab>('general')
+
+  const tabs = allTabs.filter((tab) => !tab.adminOnly || current_user?.role === 'admin')
   const [theme, setThemeState] = useState<Theme>(() => getTheme())
   const [editingPassword, setEditingPassword] = useState(false)
   const passwordForm = useForm({ current_password: '', password: '', password_confirmation: '' })
@@ -69,9 +74,19 @@ export default function Show() {
                   >
                     <div className="divide-y divide-border">
                       <div className="flex flex-col gap-4 px-4 py-4">
-                        <div>
-                          <p className="text-sm font-medium">Change Password</p>
-                          <p className="text-sm text-muted-foreground">Enter your current and new password.</p>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setEditingPassword(false)}
+                            className="flex shrink-0 items-center self-stretch rounded-sm text-muted-foreground transition-colors hover:text-foreground"
+                            aria-label="Back"
+                          >
+                            <HugeiconsIcon icon={ArrowLeft01Icon} size={22} strokeWidth={1.5} />
+                          </button>
+                          <div>
+                            <p className="text-sm font-medium">Change Password</p>
+                            <p className="text-sm text-muted-foreground">Enter your current and new password.</p>
+                          </div>
                         </div>
 
                         <div className="space-y-1">
@@ -146,7 +161,7 @@ export default function Show() {
                   </form>
                 ) : (
                   <div className="divide-y divide-border">
-                    <div className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+                    <div className="flex items-center justify-between gap-4 px-4 py-4">
                       <div>
                         <p className="text-sm font-medium">Change Password</p>
                         <p className="text-sm text-muted-foreground">Update the password associated with your account.</p>
@@ -167,25 +182,20 @@ export default function Show() {
                 <div className="divide-y divide-border">
 
                   {/* ── Theme ── */}
-                  <div className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+                  <div className="flex items-center justify-between gap-4 px-4 py-4">
                     <div>
                       <p className="text-sm font-medium">Theme</p>
                       <p className="text-sm text-muted-foreground">Choose your preferred color theme.</p>
                     </div>
-                    <div className="flex gap-2 shrink-0">
-                      <Button
-                        variant={theme === 'light' ? 'default' : 'outline'}
-                        onClick={() => handleThemeChange('light')}
-                      >
-                        Light
-                      </Button>
-                      <Button
-                        variant={theme === 'dark' ? 'default' : 'outline'}
-                        onClick={() => handleThemeChange('dark')}
-                      >
-                        Dark
-                      </Button>
-                    </div>
+                    <Select value={theme} onValueChange={(v) => handleThemeChange(v as Theme)}>
+                      <SelectTrigger className="w-32 shrink-0">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="light">Light</SelectItem>
+                        <SelectItem value="dark">Dark</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   {/* Add new appearance settings here as additional divs */}

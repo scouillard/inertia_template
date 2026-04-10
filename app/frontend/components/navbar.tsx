@@ -21,7 +21,7 @@ export default function Navbar() {
   const homeHref = current_user ? '/' : '/users/sign_in'
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-14 px-6 border-b border-white/10 bg-black">
+    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-14 px-4 sm:px-6 border-b border-white/10 bg-black">
       <Link href={homeHref} className="text-white font-semibold tracking-tight">MyApp</Link>
 
       {current_user && (

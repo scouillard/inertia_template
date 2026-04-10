@@ -73,10 +73,6 @@ class InvitationsController < InertiaController
     redirect_to new_user_session_path, alert: "This invitation has expired or has already been used." unless @invitation.pending?
   end
 
-  def require_admin!
-    head :forbidden unless current_user&.role_admin?
-  end
-
   def user_params
     params.permit(:name, :password, :password_confirmation)
   end

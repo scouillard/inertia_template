@@ -4,7 +4,7 @@ export type FlashData = {
 }
 
 export type SharedProps = {
-  current_user: { id: number; email: string; name: string; provider: string | null } | null
+  current_user: { id: number; email: string; name: string; provider: string | null; role: 'member' | 'admin' } | null
 }
 
 export interface UserRow {

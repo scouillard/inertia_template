@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   end
 
   get "settings", to: "settings#show"
+  resources :users, only: %i[update destroy]
 
   resources :invitations, only: %i[create show update], param: :token do
     member do
