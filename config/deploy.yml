@@ -91,8 +91,7 @@ builder:
 accessories:
   db:
     image: postgres:17
-    host: 192.168.0.1  # UPDATE: your server IP (can be same as web)
-    # Bind to localhost only — not exposed to the public internet.
+    host: 192.168.0.1
     port: "127.0.0.1:5432:5432"
     env:
       clear:
