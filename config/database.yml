@@ -20,11 +20,11 @@ production:
   primary: &production_primary
     adapter: postgresql
     encoding: unicode
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-    host: <%= ENV.fetch("DB_HOST", "localhost") %>
-    database: <%= ENV.fetch("DB_NAME", "inertia_template_production") %>
-    username: <%= ENV.fetch("DB_USERNAME", "app") %>
-    password: <%= ENV["DB_PASSWORD"] %>
+    pool: 5
+    host: inertia_template-postgres
+    database: inertia_template_production
+    username: inertia_template
+    password: <%= ENV["POSTGRES_PASSWORD"] %>
   cache:
     <<: *production_primary
     migrations_paths: db/cache_migrate

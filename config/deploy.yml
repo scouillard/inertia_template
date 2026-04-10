@@ -1,101 +1,64 @@
-# Name of your application. Used to uniquely configure containers.
 service: inertia_template
-
-# Name of the container image.
-# UPDATE: set to your-registry-user/inertia_template
-image: your-registry-user/inertia_template
+image: scouillard/inertia_template
 
 # Deploy to these servers.
 servers:
   web:
-    - 192.168.0.1  # UPDATE: your server IP
+    - 178.156.253.124 # TODO
   # job:
   #   hosts:
   #     - 192.168.0.1
   #   cmd: bin/jobs
 
-# SSL via Let's Encrypt. Requires assume_ssl and force_ssl in production.rb (already enabled).
-# If using Cloudflare, set SSL/TLS mode to "Full" in the Cloudflare dashboard.
-# Don't use this when deploying to multiple web servers — terminate SSL at your load balancer instead.
 proxy:
   ssl: true
-  host: app.example.com  # UPDATE: your domain
+  host: demo.couillard.dev # TODO
 
-# Where you keep your container images.
 registry:
-  # Alternatives: hub.docker.com / registry.digitalocean.com / ghcr.io / ...
-  server: ghcr.io  # UPDATE: your registry
-  username: your-github-user  # UPDATE
+  server: ghcr.io
+  username: scouillard
   password:
     - KAMAL_REGISTRY_PASSWORD
 
-# Inject ENV variables into containers (secrets come from .kamal/secrets).
 env:
   clear:
-    # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
-    # When you start using multiple servers, split job processing to a dedicated machine.
     SOLID_QUEUE_IN_PUMA: true
 
-    # PostgreSQL connection — DB_HOST uses Kamal's internal network name: <service>-<accessory>
-    DB_HOST: inertia_template-db
-    DB_NAME: inertia_template_production
-    DB_USERNAME: app
-
-    # Set number of processes dedicated to Solid Queue (default: 1)
-    # JOB_CONCURRENCY: 3
-
-    # Set number of cores available to the application on each server (default: 1).
-    # WEB_CONCURRENCY: 2
-
-    # Log everything from Rails
-    # RAILS_LOG_LEVEL: debug
+    DB_HOST: inertia_template-postgres
+    POSTGRES_USER: inertia_template
+    POSTGRES_DB: inertia_template_production
   secret:
     - RAILS_MASTER_KEY
-    - DB_PASSWORD
+    - POSTGRES_PASSWORD
     - GOOGLE_CLIENT_ID
     - GOOGLE_CLIENT_SECRET
 
-# Aliases are triggered with "bin/kamal <alias>".
 aliases:
   console: app exec --interactive --reuse "bin/rails console"
   shell: app exec --interactive --reuse "bash"
   logs: app logs -f
   dbc: app exec --interactive --reuse "bin/rails dbconsole --include-password"
 
-# Persistent storage volume for Active Storage uploads.
 volumes:
   - "inertia_template_storage:/rails/storage"
 
-# Bridge fingerprinted assets between versions to avoid 404s during rolling deploys.
 asset_path: /rails/public/vite
 
-# Configure the image builder.
 builder:
   arch: amd64
-
-  # # Build image via remote server (useful for faster amd64 builds on arm64 computers)
-  # remote: ssh://docker@docker-builder-server
-  #
-  # # Pass arguments and secrets to the Docker build process
-  # args:
-  #   RUBY_VERSION: 3.2.0
-  # secrets:
-  #   - GITHUB_TOKEN
-  #   - RAILS_MASTER_KEY
 
 # Use a different ssh user than root
 # ssh:
 #   user: app
 
-# Accessory services (managed separately from the main app).
 accessories:
-  db:
+  postgres:
     image: postgres:17
-    host: 192.168.0.1
-    port: "127.0.0.1:5432:5432"
+    host: 178.156.253.124 # TODO
+    port: "127.0.0.1:5432:5432" # Not sure about this?
     env:
       clear:
-        POSTGRES_USER: app
+        POSTGRES_USER: inertia_template
         POSTGRES_DB: inertia_template_production
       secret:
         - POSTGRES_PASSWORD
