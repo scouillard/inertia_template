@@ -18,8 +18,8 @@ class InvitationsController < InertiaController
       pending_users = Invitation.unaccepted.order(:created_at)
 
       render inertia: "settings/show", props: {
-        users: users.as_json(only: %i[id name email role]),
-        pending_invitations: pending_users.as_json(only: %i[id email created_at expires_at token]),
+        users: UserResource.new(users).serializable_hash,
+        pending_invitations: InvitationResource.new(pending_users).serializable_hash,
         errors: { email: invitation.errors[:email].first }
       }, status: :unprocessable_entity
     end

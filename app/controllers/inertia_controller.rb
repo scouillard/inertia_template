@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 class InertiaController < ApplicationController
-  inertia_share current_user: -> { current_user&.as_json(only: %i[id email name provider role]) }
+  inertia_share current_user: -> { UserResource.new(current_user).serializable_hash if current_user }
 end

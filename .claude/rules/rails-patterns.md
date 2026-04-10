@@ -501,6 +501,48 @@ end
 
 ---
 
+## Serializers (Alba)
+
+Use Alba resources for serializing ActiveRecord models in Inertia props. Resources live in `app/resources/` and inherit from `ApplicationResource`.
+
+### Structure
+
+```
+app/resources/
+├── application_resource.rb   # base class — includes Alba::Resource
+├── user_resource.rb
+└── invitation_resource.rb
+```
+
+### Defining a resource
+
+```ruby
+class UserResource < ApplicationResource
+  attributes :id, :email, :name, :provider, :role
+end
+```
+
+### Usage in controllers
+
+```ruby
+# Single record
+UserResource.new(user).serializable_hash
+
+# Collection
+UserResource.new(users).serializable_hash
+
+# Nullable (e.g. inertia_share)
+UserResource.new(current_user).serializable_hash if current_user
+```
+
+### Rules
+
+- Never use `as_json` — always use a Resource class
+- Define one resource per model under `app/resources/`
+- Include only the fields the frontend needs — no more
+
+---
+
 ## Routes
 
 ```ruby
