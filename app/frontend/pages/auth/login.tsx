@@ -1,5 +1,6 @@
 import { Head, Form, Link } from '@inertiajs/react'
 import { SpinningWheel } from '@/components/spinning-wheel'
+import { Checkbox } from '@/components/ui/checkbox'
 
 function csrfToken(): string {
   return (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content ?? ''
@@ -60,7 +61,11 @@ export default function Login() {
                 />
               </div>
 
-              <div className="flex justify-end">
+              <div className="flex items-center justify-between">
+                <label htmlFor="remember_me" className="flex items-center gap-2 text-xs text-muted-foreground cursor-pointer">
+                  <Checkbox id="remember_me" name="user[remember_me]" value="1" />
+                  Remember me
+                </label>
                 <Link href="/users/password/new" className="text-xs text-muted-foreground hover:text-foreground underline underline-offset-4">
                   Forgot password?
                 </Link>

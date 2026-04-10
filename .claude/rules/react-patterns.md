@@ -89,6 +89,8 @@ export function Card({ title, children }: CardProps) {
 
 ## Shadcn Component Usage
 
+IMPORTANT: **Always use a Shadcn component when one exists** — install it with `npx shadcn@latest add <component>` if it's not yet in `/components/ui/`. Only fall back to a native HTML element when Shadcn has no equivalent.
+
 IMPORTANT: **DO NOT modify `/components/ui/` files** - these are Shadcn defaults.
 
 ```tsx

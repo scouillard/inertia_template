@@ -9,6 +9,7 @@ class SessionsController < Devise::SessionsController
     self.resource = warden.authenticate(auth_options)
 
     if resource
+      resource.remember_me = params.dig(:user, :remember_me) == "1"
       sign_in(resource_name, resource)
 
       redirect_to after_sign_in_path_for(resource), notice: "Signed in successfully", status: :see_other
