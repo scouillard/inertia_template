@@ -11,7 +11,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       redirect_to root_path, notice: "Signed in successfully."
     else
       redirect_to new_user_session_path,
-        alert: "You need a valid invitation to join. Ask an admin to invite #{auth.info.email}."
+        alert: "You need a valid invitation to join."
     end
   end
 

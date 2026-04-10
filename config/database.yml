@@ -12,10 +12,6 @@ test:
   <<: *default
   database: storage/test.sqlite3
 
-# Production uses PostgreSQL via Kamal accessory.
-# solid_cache, solid_queue, and solid_cable all share the same database
-# (no separate files needed unlike SQLite) — each uses its own tables
-# via separate migrations_paths.
 production:
   primary: &production_primary
     adapter: postgresql
