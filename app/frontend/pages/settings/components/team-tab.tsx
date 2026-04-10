@@ -37,7 +37,7 @@ export function TeamTab({ users, pending_invitations }: TeamTabProps) {
     setCurrentRole(value)
     setUpdatingRole(true)
 
-    router.patch(`/users/${selectedUser!.id}`, { role: value }, {
+    router.patch(`/settings/users/${selectedUser!.id}`, { role: value }, {
       preserveState: true,
       onSuccess: () => {
         setSelectedUser((u) => u ? { ...u, role: value } : u)
@@ -60,7 +60,7 @@ export function TeamTab({ users, pending_invitations }: TeamTabProps) {
   }
 
   function handleDelete() {
-    router.delete(`/users/${selectedUser!.id}`, {
+    router.delete(`/settings/users/${selectedUser!.id}`, {
       preserveState: true,
       onSuccess: () => {
         setSelectedUser(null)

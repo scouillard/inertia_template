@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UsersController < InertiaController
+class Settings::UsersController < InertiaController
   before_action :require_admin!
   before_action :set_user
   before_action :prevent_self_action

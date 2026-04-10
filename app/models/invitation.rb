@@ -14,7 +14,7 @@ class Invitation < ApplicationRecord
 
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :email, uniqueness: { conditions: -> { pending }, message: "already has a pending invitation" }
-  validate :email_not_already_a_member
+  validate :email_not_already_a_member, on: :create
 
   before_create :set_expiry
 

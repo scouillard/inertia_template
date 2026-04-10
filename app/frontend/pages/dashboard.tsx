@@ -5,7 +5,7 @@ import railsSvg from '/assets/rails.svg'
 import inertiaSvg from '/assets/inertia.svg'
 import reactSvg from '/assets/react.svg'
 
-export default function InertiaExample(
+export default function Dashboard(
   { rails_version, ruby_version, rack_version, inertia_rails_version }:
   { rails_version: string, ruby_version: string, rack_version: string, inertia_rails_version: string }
 ) {
@@ -26,7 +26,7 @@ export default function InertiaExample(
       </nav>
 
       <p className="mt-8 text-sm text-muted-foreground">
-        Edit <code>app/frontend/pages/inertia_example/index.tsx</code> and save to test HMR.
+        Edit <code>app/frontend/pages/dashboard.tsx</code> and save to test HMR.
       </p>
 
       <ul className="mt-8 flex gap-2 text-sm text-muted-foreground list-none">

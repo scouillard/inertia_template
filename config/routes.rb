@@ -9,7 +9,10 @@ Rails.application.routes.draw do
   end
 
   get "settings", to: "settings#show"
-  resources :users, only: %i[update destroy]
+
+  namespace :settings do
+    resources :users, only: %i[update destroy]
+  end
 
   resources :invitations, only: %i[create show update destroy], param: :token do
     member do
@@ -22,8 +25,7 @@ Rails.application.routes.draw do
     resource :password, only: :update
   end
 
-  root "inertia_example#index"
-  get "inertia-example", to: "inertia_example#index"
+  root "dashboard#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
