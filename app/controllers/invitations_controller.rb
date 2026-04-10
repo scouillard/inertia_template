@@ -2,8 +2,8 @@
 
 class InvitationsController < InertiaController
   skip_before_action :authenticate_user!, only: %i[show update google]
-  before_action :require_admin!, only: :create
-  before_action :set_invitation, only: %i[show update google]
+  before_action :require_admin!, only: %i[create destroy resend]
+  before_action :set_invitation, only: %i[show update google destroy resend]
   before_action :ensure_pending!, only: %i[show update google]
 
   def create
@@ -15,11 +15,11 @@ class InvitationsController < InertiaController
       redirect_to settings_path, notice: "Invitation sent to #{invitation.email}."
     else
       users = User.order(:name).sort_by { |u| u.role_admin? ? 0 : 1 }
-      pending_users = Invitation.pending.order(:created_at)
+      pending_users = Invitation.unaccepted.order(:created_at)
 
       render inertia: "settings/show", props: {
         users: users.as_json(only: %i[id name email role]),
-        pending_invitations: pending_users.as_json(only: %i[id email created_at]),
+        pending_invitations: pending_users.as_json(only: %i[id email created_at expires_at token]),
         errors: { email: invitation.errors[:email].first }
       }, status: :unprocessable_entity
     end
@@ -45,6 +45,18 @@ class InvitationsController < InertiaController
       </body>
       </html>
     HTML
+  end
+
+  def destroy
+    @invitation.destroy!
+    redirect_to settings_path, notice: "Invitation to #{@invitation.email} was removed."
+  end
+
+  def resend
+    @invitation.resend!
+    redirect_to settings_path, notice: "Invitation resent to #{@invitation.email}."
+  rescue ActiveRecord::RecordInvalid => e
+    redirect_to settings_path, alert: e.record.errors.full_messages.first
   end
 
   def update

@@ -11,9 +11,10 @@ Rails.application.routes.draw do
   get "settings", to: "settings#show"
   resources :users, only: %i[update destroy]
 
-  resources :invitations, only: %i[create show update], param: :token do
+  resources :invitations, only: %i[create show update destroy], param: :token do
     member do
       post :google
+      post :resend
     end
   end
 

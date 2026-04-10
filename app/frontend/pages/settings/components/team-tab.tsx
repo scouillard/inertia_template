@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { router, useForm, usePage } from '@inertiajs/react'
 import toast from 'react-hot-toast'
 import { HugeiconsIcon } from '@hugeicons/react'
-import { ArrowLeft01Icon } from '@hugeicons/core-free-icons'
+import { ArrowLeft01Icon, Delete02Icon, Refresh01Icon } from '@hugeicons/core-free-icons'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -238,23 +238,58 @@ export function TeamTab({ users, pending_invitations }: TeamTabProps) {
           )
         })}
 
-        {/* Pending invitations */}
-        {pending_invitations.map((inv) => (
-          <div key={inv.id} className="flex items-center gap-3 px-4 py-3">
-            <span
-              className="inline-flex shrink-0 select-none items-center justify-center rounded-full bg-muted font-bold text-muted-foreground"
-              style={{ width: 36, height: 36, fontSize: 14 }}
-            >
-              ?
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm text-muted-foreground">{inv.email}</p>
+        {/* Invitations */}
+        {pending_invitations.map((inv) => {
+          const isExpired = new Date(inv.expires_at) < new Date()
+          return (
+            <div key={inv.id} className="flex items-center gap-3 px-4 py-3">
+              <span
+                className="inline-flex shrink-0 select-none items-center justify-center rounded-full bg-muted font-bold text-muted-foreground"
+                style={{ width: 36, height: 36, fontSize: 14 }}
+              >
+                ?
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm text-muted-foreground">{inv.email}</p>
+              </div>
+              <span
+                className={`shrink-0 rounded-full border border-dashed px-2.5 py-0.5 text-xs font-medium ${
+                  isExpired
+                    ? 'border-destructive/50 text-destructive'
+                    : 'border-border text-muted-foreground'
+                }`}
+              >
+                {isExpired ? 'expired' : 'pending'}
+              </span>
+              <div className="flex shrink-0 items-center gap-1">
+                <button
+                  onClick={() => {
+                    if (confirm(`Resend invitation to ${inv.email}?`)) {
+                      router.post(`/invitations/${inv.token}/resend`, {}, { preserveState: true })
+                    }
+                  }}
+                  className="rounded p-1 text-muted-foreground transition-colors hover:text-foreground"
+                  aria-label="Resend invitation"
+                  title="Resend invitation"
+                >
+                  <HugeiconsIcon icon={Refresh01Icon} size={16} strokeWidth={1.5} />
+                </button>
+                <button
+                  onClick={() => {
+                    if (confirm(`Remove invitation for ${inv.email}?`)) {
+                      router.delete(`/invitations/${inv.token}`, { preserveState: true })
+                    }
+                  }}
+                  className="rounded p-1 text-muted-foreground transition-colors hover:text-destructive"
+                  aria-label="Remove invitation"
+                  title="Remove invitation"
+                >
+                  <HugeiconsIcon icon={Delete02Icon} size={16} strokeWidth={1.5} />
+                </button>
+              </div>
             </div>
-            <span className="shrink-0 rounded-full bg-foreground/10 px-2.5 py-0.5 text-xs font-medium text-foreground">
-              pending
-            </span>
-          </div>
-        ))}
+          )
+        })}
 
       </div>
     </Card>
