@@ -15,8 +15,10 @@ export default function Layout({ children }: PropsWithChildren) {
   return (
     <>
       <Navbar />
-      <main className="pt-14">
-        {children}
+      <main className="flex flex-col min-h-[calc(100svh-3.5rem)] pt-14">
+        <div className="flex flex-col flex-1 px-4 py-6 sm:px-8 sm:py-12">
+          {children}
+        </div>
       </main>
       <Toaster
         position="bottom-right"

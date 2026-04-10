@@ -6,7 +6,7 @@ export default function ForgotPassword() {
 
   if (sent) {
     return (
-      <div className="full-page flex items-center justify-center pb-48">
+      <div className="flex flex-1 items-center justify-center pb-36">
         <Head title="Check your inbox" />
 
         <div className="w-full max-w-sm space-y-4 text-center">
@@ -23,7 +23,7 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div className="full-page flex items-center justify-center pb-48">
+    <div className="flex flex-1 items-center justify-center pb-36">
       <Head title="Forgot password" />
 
       <div className="w-full max-w-sm space-y-6">

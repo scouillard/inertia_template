@@ -32,9 +32,6 @@ export default function Navbar() {
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem className="text-xs text-muted-foreground" disabled>
-              {current_user.email}
-            </DropdownMenuItem>
             <DropdownMenuItem onSelect={() => router.visit('/settings')} className="flex items-center gap-2">
               <HugeiconsIcon icon={Settings01Icon} size={14} />
               Settings

@@ -10,7 +10,7 @@ export default function InertiaExample(
   { rails_version: string, ruby_version: string, rack_version: string, inertia_rails_version: string }
 ) {
   return (
-    <div className="full-page flex flex-col items-center justify-center text-center">
+    <div className="flex flex-1 flex-col items-center justify-center text-center">
       <Head title="Ruby on Rails + Inertia + React" />
 
       <nav className="flex items-center gap-4">

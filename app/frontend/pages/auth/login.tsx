@@ -7,7 +7,7 @@ function csrfToken(): string {
 
 export default function Login() {
   return (
-    <div className="full-page flex items-center justify-center pb-48">
+    <div className="flex flex-1 items-center justify-center pb-36">
       <Head title="Sign in" />
 
       <div className="w-full max-w-sm space-y-6">

@@ -33,11 +33,9 @@ export default function Show() {
   }
 
   return (
-    <div className="min-h-[calc(100svh-3.5rem)] px-4 py-8 sm:px-8 sm:py-12">
+    <div className="mx-auto max-w-3xl w-full">
       <Head title="Settings" />
-
-      <div className="mx-auto max-w-3xl">
-        <div className="mb-8 sm:mb-10">
+      <div className="mb-8 sm:mb-10">
           <h1 className="text-2xl font-semibold">Settings</h1>
           <p className="mt-1 text-sm text-muted-foreground">Manage your account and preferences.</p>
         </div>
@@ -207,7 +205,6 @@ export default function Show() {
             {activeTab === 'team' && <TeamTab users={users} pending_invitations={pending_invitations} />}
           </div>
         </div>
-      </div>
     </div>
   )
 }

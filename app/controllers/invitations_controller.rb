@@ -70,7 +70,7 @@ class InvitationsController < InertiaController
   end
 
   def ensure_pending!
-    redirect_to new_user_session_path, alert: "This invitation has expired or has already been used." unless @invitation.pending?
+    redirect_to new_user_session_path, alert: "Invitation not found." unless @invitation.pending?
   end
 
   def user_params

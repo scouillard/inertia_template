@@ -37,7 +37,7 @@ export default function Show() {
   const { email, token } = usePage<InvitationShowProps>().props
 
   return (
-    <div className="full-page flex items-center justify-center pb-48">
+    <div className="flex flex-1 items-center justify-center pb-36">
       <Head title="Accept invitation" />
 
       <div className="w-full max-w-sm space-y-6">
