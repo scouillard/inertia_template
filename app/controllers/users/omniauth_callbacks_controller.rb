@@ -10,8 +10,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
       redirect_to root_path, notice: "Signed in successfully."
     else
-      redirect_to new_user_session_path,
-        alert: "You need a valid invitation to join."
+      redirect_to new_user_session_path, alert: "This email does not match with the invitation email address."
     end
   end
 

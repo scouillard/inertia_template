@@ -8,10 +8,6 @@ class Invitation < ApplicationRecord
   scope :unaccepted, -> { where(accepted_at: nil) }
   scope :pending, -> { where(accepted_at: nil).where(expires_at: Time.current..) }
 
-  def self.find_for_omniauth(auth, session_token: nil)
-    pending.find_by(token: session_token) || pending.find_by(email: auth.info.email)
-  end
-
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :email, uniqueness: { conditions: -> { pending }, message: "already has a pending invitation" }
   validate :email_not_already_a_member, on: :create
@@ -36,6 +32,10 @@ class Invitation < ApplicationRecord
       update!(accepted_at: Time.current)
       user
     end
+  end
+
+  def self.find_for_omniauth(auth, session_token: nil)
+    pending.find_by(token: session_token) || pending.find_by(email: auth.info.email)
   end
 
   def accept_with_google!(auth)
