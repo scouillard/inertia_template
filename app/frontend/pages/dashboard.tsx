@@ -1,14 +1,19 @@
-import { Head } from '@inertiajs/react'
+import { Head, usePage } from '@inertiajs/react'
 import { version as react_version } from 'react'
 
 import railsSvg from '/assets/rails.svg'
 import inertiaSvg from '/assets/inertia.svg'
 import reactSvg from '/assets/react.svg'
 
-export default function Dashboard(
-  { rails_version, ruby_version, rack_version, inertia_rails_version }:
-  { rails_version: string, ruby_version: string, rack_version: string, inertia_rails_version: string }
-) {
+interface DashboardProps extends Record<string, unknown> {
+  rails_version: string
+  ruby_version: string
+  rack_version: string
+  inertia_rails_version: string
+}
+
+export default function Dashboard() {
+  const { rails_version, ruby_version, rack_version, inertia_rails_version } = usePage<DashboardProps>().props
   return (
     <div className="flex flex-1 flex-col items-center justify-center text-center">
       <Head title="Ruby on Rails + Inertia + React" />

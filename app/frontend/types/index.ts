@@ -3,6 +3,14 @@ export type FlashData = {
   alert?: string
 }
 
+export interface CurrentUser {
+  id: number
+  email: string
+  name: string
+  provider: string | null
+  role: 'member' | 'admin'
+}
+
 export interface Notification {
   id: number
   message: string
@@ -11,7 +19,7 @@ export interface Notification {
 }
 
 export type SharedProps = {
-  current_user: { id: number; email: string; name: string; provider: string | null; role: 'member' | 'admin' } | null
+  current_user: CurrentUser | null
   unread_notifications_count: number
   notifications: Notification[]
 }

@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { SpinningWheel } from '@/components/spinning-wheel'
 import { getTheme, setTheme, type Theme } from '@/lib/theme'
 import { TeamTab } from './components/team-tab'
-import type { SharedProps, UserRow, InvitationRow } from '@/types'
+import type { UserRow, InvitationRow } from '@/types'
 
 type Tab = 'general' | 'account' | 'team'
 
@@ -19,7 +19,7 @@ const allTabs: { id: Tab; label: string; adminOnly?: boolean }[] = [
 ]
 
 export default function Show() {
-  const { users, pending_invitations, current_user } = usePage<SharedProps & { users: UserRow[]; pending_invitations: InvitationRow[] }>().props
+  const { users, pending_invitations, current_user } = usePage<{ users: UserRow[]; pending_invitations: InvitationRow[] }>().props
   const [activeTab, setActiveTab] = useState<Tab>('general')
 
   const tabs = allTabs.filter((tab) => !tab.adminOnly || current_user?.role === 'admin')

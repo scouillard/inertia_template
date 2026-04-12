@@ -5,7 +5,7 @@ function csrfToken(): string {
   return (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content ?? ''
 }
 
-interface InvitationShowProps {
+interface InvitationShowProps extends Record<string, unknown> {
   email: string
   token: string
 }
