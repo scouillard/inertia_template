@@ -1,0 +1,79 @@
+services:
+  web:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/rails
+      - bundle:/usr/local/bundle
+    environment:
+      - DB_HOST=postgres
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - REDIS_URL=redis://redis:6379/0
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  sidekiq:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/rails
+      - bundle:/usr/local/bundle
+    environment:
+      - DB_HOST=postgres
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - REDIS_URL=redis://redis:6379/0
+
+    command: bundle exec sidekiq
+    restart: unless-stopped
+    depends_on:
+      - web
+
+  vite:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/rails
+      - bundle:/usr/local/bundle
+    ports:
+      - "3036:3036"
+    command: bin/vite dev
+
+  postgres:
+    image: postgres:17-alpine
+    # Remove stale postmaster.pid left by abrupt shutdowns (power-off, forced kill).
+    # Without this, postgres refuses to start because it thinks another instance is running.
+    command: >
+      sh -c "rm -f /var/lib/postgresql/data/postmaster.pid && exec docker-entrypoint.sh postgres"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+volumes:
+  bundle:
+  postgres_data:
+  redis_data:

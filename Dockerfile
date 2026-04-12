@@ -1,11 +1,12 @@
 # syntax=docker/dockerfile:1
 # check=error=true
 
-# This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
-# docker build -t inertia_template .
-# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name inertia_template inertia_template
-
-# For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
+# Production: used by Kamal
+#   docker build -t inertia_template .
+#   docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name inertia_template inertia_template
+#
+# Development: used by docker-compose
+#   docker compose up --build
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version
 ARG RUBY_VERSION=3.2.0
@@ -62,6 +63,20 @@ RUN NODE_ENV=production ./bin/vite build
 RUN bundle exec bootsnap precompile -j 1 app/ lib/
 
 
+# Development stage — used by docker-compose. Source is volume-mounted so changes
+# are reflected immediately without rebuilding the image.
+FROM build AS development
+
+ENV RAILS_ENV="development" \
+    BUNDLE_DEPLOYMENT="0" \
+    BUNDLE_WITHOUT=""
+
+# Re-install gems to include development group
+RUN bundle install
+
+EXPOSE 3000
+ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+CMD ["./bin/rails", "server", "-b", "0.0.0.0"]
 
 
 # Final stage for app image

@@ -5,10 +5,10 @@ image: scouillard/inertia_template
 servers:
   web:
     - 178.156.253.124 # TODO
-  # job:
-  #   hosts:
-  #     - 192.168.0.1
-  #   cmd: bin/jobs
+  job:
+    hosts:
+      - 178.156.253.124 # TODO
+    cmd: bundle exec sidekiq
 
 proxy:
   ssl: true
@@ -21,15 +21,13 @@ registry:
     - KAMAL_REGISTRY_PASSWORD
 
 env:
-  clear:
-    SOLID_QUEUE_IN_PUMA: true
-
-    DB_HOST: inertia_template-postgres
-    POSTGRES_USER: inertia_template
-    POSTGRES_DB: inertia_template_production
   secret:
     - RAILS_MASTER_KEY
+    - DB_HOST
+    - POSTGRES_USER
+    - POSTGRES_DB
     - POSTGRES_PASSWORD
+    - REDIS_URL
     - GOOGLE_CLIENT_ID
     - GOOGLE_CLIENT_SECRET
     - RESEND_API_KEY
@@ -56,12 +54,17 @@ accessories:
   postgres:
     image: postgres:17
     host: 178.156.253.124 # TODO
-    port: "127.0.0.1:5432:5432" # Not sure about this?
+    port: "127.0.0.1:5432:5432"
     env:
-      clear:
-        POSTGRES_USER: inertia_template
-        POSTGRES_DB: inertia_template_production
       secret:
+        - POSTGRES_USER
+        - POSTGRES_DB
         - POSTGRES_PASSWORD
     directories:
       - data:/var/lib/postgresql/data
+  redis:
+    image: redis:7-alpine
+    host: 178.156.253.124 # TODO
+    port: "127.0.0.1:6379:6379"
+    directories:
+      - data:/data
