@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class InertiaController < ApplicationController
-  inertia_share current_user: -> { UserResource.new(current_user).serializable_hash if current_user }
+  inertia_share current_user: -> { UserSerializer.new(current_user).serializable_hash if current_user }
   inertia_share unread_notifications_count: -> { current_user&.notifications&.unread&.count || 0 }
   inertia_share notifications: -> {
     next [] unless current_user

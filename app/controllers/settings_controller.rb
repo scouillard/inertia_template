@@ -3,8 +3,8 @@ class SettingsController < InertiaController
     users = User.order(:name).sort_by { |u| u.role_admin? ? 0 : 1 }
     pending_invitations = Invitation.unaccepted.order(:created_at)
     render inertia: "settings/show", props: {
-      users: UserResource.new(users).serializable_hash,
-      pending_invitations: InvitationResource.new(pending_invitations).serializable_hash
+      users: UserSerializer.new(users).serializable_hash,
+      pending_invitations: InvitationSerializer.new(pending_invitations).serializable_hash
     }
   end
 end

@@ -510,14 +510,14 @@ Use Alba resources for serializing ActiveRecord models in Inertia props. Resourc
 ```
 app/resources/
 ├── application_resource.rb   # base class — includes Alba::Resource
-├── user_resource.rb
-└── invitation_resource.rb
+├── user_serializer.rb
+└── invitation_serializer.rb
 ```
 
 ### Defining a resource
 
 ```ruby
-class UserResource < ApplicationResource
+class UserSerializer < ApplicationResource
   attributes :id, :email, :name, :provider, :role
 end
 ```
@@ -526,13 +526,13 @@ end
 
 ```ruby
 # Single record
-UserResource.new(user).serializable_hash
+UserSerializer.new(user).serializable_hash
 
 # Collection
-UserResource.new(users).serializable_hash
+UserSerializer.new(users).serializable_hash
 
 # Nullable (e.g. inertia_share)
-UserResource.new(current_user).serializable_hash if current_user
+UserSerializer.new(current_user).serializable_hash if current_user
 ```
 
 ### Rules
