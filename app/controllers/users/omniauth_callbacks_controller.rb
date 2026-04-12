@@ -10,7 +10,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
       redirect_to root_path, notice: "Signed in successfully."
     else
-      redirect_to new_user_session_path, alert: "This email does not match with the invitation email address."
+      redirect_to new_user_session_path, alert: "This Google email address is not registered."
     end
   end
 

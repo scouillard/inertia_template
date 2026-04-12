@@ -21,6 +21,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :notifications, only: [] do
+    collection do
+      patch :mark_all_read
+    end
+  end
+
   namespace :account do
     resource :password, only: :update
   end
