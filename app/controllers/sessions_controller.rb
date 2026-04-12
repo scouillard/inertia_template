@@ -1,5 +1,8 @@
 class SessionsController < Devise::SessionsController
   skip_before_action :authenticate_user!, only: %i[new create]
+  rate_limit to: 10, within: 3.minutes, only: :create, with: -> {
+    render inertia: "auth/login", props: { errors: { email: "Too many login attempts. Please try again later." } }, status: :too_many_requests
+  }
 
   def new
     render inertia: "auth/login"

@@ -3,6 +3,7 @@
 class InvitationsController < InertiaController
   skip_before_action :authenticate_user!, only: %i[show update google]
   before_action :require_admin!, only: %i[create destroy resend]
+  rate_limit to: 10, within: 1.minute, only: :create
   before_action :set_invitation, only: %i[show update google destroy resend]
   before_action :ensure_pending!, only: %i[show update google]
 

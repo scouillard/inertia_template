@@ -2,7 +2,7 @@ import { Head, Form, Link, usePage } from '@inertiajs/react'
 import { SpinningWheel } from '@/components/spinning-wheel'
 
 export default function ForgotPassword() {
-  const { sent } = usePage<{ sent?: boolean }>().props
+  const { sent, errors } = usePage<{ sent?: boolean; errors?: { email?: string } }>().props
 
   if (sent) {
     return (
@@ -40,9 +40,10 @@ export default function ForgotPassword() {
                 <input
                   type="email"
                   name="user[email]"
-                  className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-ring"
+                  className={`w-full rounded-md border bg-transparent px-3 py-2 text-sm outline-none focus:ring-1 ${errors?.email ? 'border-destructive focus:ring-destructive/30' : 'border-input focus:ring-ring'}`}
                   required
                 />
+                {errors?.email && <p className="text-xs text-destructive">{errors.email}</p>}
               </div>
 
               <button
