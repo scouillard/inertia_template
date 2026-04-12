@@ -16,7 +16,7 @@ class SessionsController < Devise::SessionsController
     else
       render inertia: "auth/login", props: {
         errors: { email: "Invalid email or password." }
-      }, status: :unprocessable_entity
+      }, status: :unprocessable_content
     end
   end
 

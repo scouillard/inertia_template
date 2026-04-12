@@ -12,7 +12,7 @@ class InvitationsController < InertiaController
     if invitation.save
       UserMailer.invitation(invitation).deliver_later
 
-      redirect_to settings_path, notice: "Invitation sent to #{invitation.email}."
+      redirect_to settings_path, notice: "Invitation sent to #{invitation.email}.", status: :see_other
     else
       users = User.order(:name).sort_by { |u| u.role_admin? ? 0 : 1 }
       pending_users = Invitation.unaccepted.order(:created_at)
@@ -21,7 +21,7 @@ class InvitationsController < InertiaController
         users: UserResource.new(users).serializable_hash,
         pending_invitations: InvitationResource.new(pending_users).serializable_hash,
         errors: { email: invitation.errors[:email].first }
-      }, status: :unprocessable_entity
+      }, status: :unprocessable_content
     end
   end
 
@@ -49,14 +49,14 @@ class InvitationsController < InertiaController
 
   def destroy
     @invitation.destroy!
-    redirect_to settings_path, notice: "Invitation to #{@invitation.email} was removed."
+    redirect_to settings_path, notice: "Invitation to #{@invitation.email} was removed.", status: :see_other
   end
 
   def resend
     @invitation.resend!
-    redirect_to settings_path, notice: "Invitation resent to #{@invitation.email}."
+    redirect_to settings_path, notice: "Invitation resent to #{@invitation.email}.", status: :see_other
   rescue ActiveRecord::RecordInvalid => e
-    redirect_to settings_path, alert: e.record.errors.full_messages.first
+    redirect_to settings_path, alert: e.record.errors.full_messages.first, status: :see_other
   end
 
   def update
@@ -70,7 +70,7 @@ class InvitationsController < InertiaController
       email: @invitation.email,
       token: @invitation.token,
       errors: e.record.errors.messages.transform_values(&:first)
-    }, status: :unprocessable_entity
+    }, status: :unprocessable_content
   end
 
   private

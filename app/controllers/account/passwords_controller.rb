@@ -7,7 +7,7 @@ class Account::PasswordsController < InertiaController
     else
       render inertia: "settings/show", props: {
         errors: current_user.errors.messages.transform_values(&:first)
-      }, status: :unprocessable_entity
+      }, status: :unprocessable_content
     end
   end
 

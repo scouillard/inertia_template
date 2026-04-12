@@ -7,15 +7,15 @@ class Settings::UsersController < InertiaController
 
   def update
     if @user.update(user_params)
-      redirect_to settings_path, notice: "#{@user.name}'s role updated to #{@user.role}."
+      redirect_to settings_path, notice: "#{@user.name}'s role updated to #{@user.role}.", status: :see_other
     else
-      redirect_to settings_path, alert: @user.errors.full_messages.first
+      redirect_to settings_path, alert: @user.errors.full_messages.first, status: :see_other
     end
   end
 
   def destroy
     @user.destroy!
-    redirect_to settings_path, notice: "#{@user.name} has been removed from the team."
+    redirect_to settings_path, notice: "#{@user.name} has been removed from the team.", status: :see_other
   end
 
   private

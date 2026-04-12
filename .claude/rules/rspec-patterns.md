@@ -8,7 +8,9 @@ paths:
 
 Conventions for writing specs in this app. Read this before writing any spec.
 
-Write only necessary specs. Do not write specs for the sake of writing specs.
+Write only necessary specs. Do not aim for full coverage — coverage is a by-product, not a goal.
+
+Do not test framework behaviour. Rails validation macros (`validates :name, presence: true`), Devise modules, and standard ActiveRecord associations are tested by their respective libraries — writing specs for them adds noise and breaks when the framework changes. Only test **custom logic**: methods you wrote, scopes with non-trivial conditions, callbacks with side-effects, and authorization rules.
 
 Specs tell a story, top to bottom. Prefer repetition over cleverness — a failing test should be debuggable without scrolling.
 
@@ -17,14 +19,13 @@ Specs tell a story, top to bottom. Prefer repetition over cleverness — a faili
 ## Rules
 
 - Use **factories** with minimal required attributes. Traits for variation (`:admin`, `:premium`).
-- **Inline `create`** inside `it` blocks by default.
+- **Inline `create`** inside `it` blocks by default. Prefer `build` over `create` when the database isn't needed.
 - **`before` + `@ivar`** allowed only when setup is (a) needed by every `it` in the block, (b) boring scaffolding, not the subject of the test, and (c) noisy to inline.
 - **No `let`, no `let!`, no `subject`.** Ever.
 - **NO `shared_examples`, NO `shared_context`.** Ever. Not once. If you're reaching for them, write the tests out longhand.
 - **Max 2 levels** of `describe`/`context` nesting.
 - Multiple expectations per `it` are fine when they describe one scenario.
 - Everything for a spec lives in one file. No `spec/support` modules that hide setup. Tiny visible helpers (`sign_in`) are fine.
-- Prefer `build` over `create` when the database isn't needed.
 
 ## Mocking
 
@@ -34,15 +35,9 @@ Specs tell a story, top to bottom. Prefer repetition over cleverness — a faili
 - Jobs: `ActiveJob::TestHelper`. Mail: `ActionMailer::Base.deliveries`.
 - If you're tempted to stub your own code, the design probably wants to be split.
 
-## Factories
-
-- Minimal required attributes only.
-- Traits for variation, not fat defaults.
-- No surprise associations — only what the model requires to exist.
-
 ## Inertia
 
-Setup: `require 'inertia_rails/rspec'` in `rails_helper.rb`. Tag specs with `inertia: true` or use `type: :request`.
+Tag specs with `type: :request`.
 
 - Assert on the **component and props**, not just HTTP status:
   ```ruby
@@ -50,6 +45,7 @@ Setup: `require 'inertia_rails/rspec'` in `rails_helper.rb`. Tag specs with `ine
   expect(inertia).to have_props(user: hash_including(id: member.id, role: "admin"))
   ```
 - Use `have_props` (partial) by default. Reserve `have_exact_props` for when you really mean it.
+- Values must be exact literals — RSpec matchers (`be_present`, `include(...)`, etc.) do not work inside `have_props`. If the value is dynamic, drop the props assertion and rely on status + component name.
 - Assert on **prop shape**, not equality with `as_json` output. Tests survive serializer swaps.
 - Flash: `expect(inertia).to have_flash(notice: "...")`.
 - Non-GET redirects must be **`status: :see_other`** (303). Assert it.
