@@ -8,6 +8,11 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+Admin.find_or_create_by!(email: 'samuel@myapp.com') do |admin|
+  admin.password = 'password1234!'
+  admin.password_confirmation = 'password1234!'
+end
+
 User.find_or_create_by!(email: 'samuel@myapp.com') do |user|
   user.name = 'Samuel Couillard'
   user.password = 'password1234!'

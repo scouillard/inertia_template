@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  draw :madmin
+  devise_for :admins, only: %i[sessions]
   devise_for :users,
     controllers: { sessions: "sessions", passwords: "passwords", omniauth_callbacks: "users/omniauth_callbacks" },
     skip: %i[registrations confirmations unlocks]

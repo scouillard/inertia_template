@@ -57,6 +57,7 @@ COPY . .
 # Install JS dependencies and build frontend assets
 RUN npm ci --include=dev
 RUN NODE_ENV=production ./bin/vite build
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
 
 # Precompile bootsnap code for faster boot times.
 # -j 1 disable parallel compilation to avoid a QEMU bug: https://github.com/rails/bootsnap/issues/495
