@@ -16,7 +16,7 @@ gem "jbuilder"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
 gem "redis", "~> 5.0"
-gem "sidekiq", "~> 7.0"
+gem "sidekiq", "~> 8.0"
 gem "connection_pool", "~> 2.4"
 
 # Reduces boot times through caching; required in config/boot.rb
